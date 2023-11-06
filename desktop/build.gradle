@@ -49,8 +49,11 @@ task dist(type: Jar) {
 task copyConfig(type: Copy) {
     from 'assets'
     into '../android/assets'
+    duplicatesStrategy DuplicatesStrategy.INCLUDE
 }
 
 
 dist.dependsOn classes
 dist.dependsOn copyConfig
+processResources.dependsOn copyConfig
+processResources.duplicatesStrategy(DuplicatesStrategy.INCLUDE)
