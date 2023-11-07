@@ -36,7 +36,7 @@ public class GameObject implements Disposable, Poolable {
 
     protected boolean flippedX, flippedY;
 
-    protected GameObject() {
+    public GameObject() {
     }
 
     public int getId() {
@@ -149,16 +149,12 @@ public class GameObject implements Disposable, Poolable {
 
     // 0 - x, 1 - y, 2 - both x and y
     public boolean isFlipped(int axis) {
-        switch (axis) {
-            case 0:
-                return flippedX;
-            case 1:
-                return flippedY;
-            case 2:
-                return flippedX && flippedY;
-            default:
-                throw new IllegalArgumentException("Only 0, 1, 2 allowed, but " + axis + " is passed");
-        }
+        return switch (axis) {
+            case 0 -> flippedX;
+            case 1 -> flippedY;
+            case 2 -> flippedX && flippedY;
+            default -> throw new IllegalArgumentException("Only 0, 1, 2 allowed, but " + axis + " is passed");
+        };
     }
 
     public void flip(boolean x, boolean y) {

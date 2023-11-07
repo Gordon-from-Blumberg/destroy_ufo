@@ -14,12 +14,12 @@ import java.io.File;
 public class DesktopLauncher {
 	public static void main (String[] args) {
 		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-//		config.foregroundFPS = 0;
 //		config.vSyncEnabled = false;
 		config.title = Main.NAME;
 
 		DesktopFactory.init();
 		ConfigManager cfgMgr = AbstractFactory.getInstance().configManager();
+		config.foregroundFPS = 24;
 
 		for (String arg : args) {
 			if ("-debug".equals(arg)) {

@@ -10,6 +10,12 @@ public class RandomGen {
 
     private final Random rand = new RandomXS128();
 
+    public RandomGen() { }
+
+    public RandomGen(long seed) {
+        rand.setSeed(seed);
+    }
+
     public static void setSeed(long seed) {
         INSTANCE.rand.setSeed(seed);
     }

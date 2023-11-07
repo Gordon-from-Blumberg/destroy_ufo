@@ -23,7 +23,7 @@ public abstract class AbstractScreen implements Screen {
     protected AssetManager assets;
 
     protected SpriteBatch batch;
-    protected Color color = Color.BLACK;
+    protected Color color = new Color(Color.BLACK);
 
     protected UIRenderer uiRenderer;
 
