@@ -5,10 +5,12 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.gordonfromblumberg.games.core.common.Main;
 import com.gordonfromblumberg.games.core.common.factory.AbstractFactory;
+import com.gordonfromblumberg.games.core.common.model.PhysicsGameObject;
 import com.gordonfromblumberg.games.core.common.utils.ConfigManager;
 import com.gordonfromblumberg.games.core.common.world.WorldRenderer;
 
@@ -33,12 +35,18 @@ public class UfoRenderer extends WorldRenderer<UfoWorld> {
         final Batch batch = this.batch;
         final float width = viewport.getWorldWidth();
         final float height = viewport.getWorldHeight();
+        final Vector2 turretOrigin = world.getTurretOrigin();
 
         batch.begin();
 
-        batch.draw(turret, (width - turret.getRegionWidth()) / 2, 15, turret.getRegionWidth() * 0.5f, 0,
+        batch.draw(turret, turretOrigin.x - turret.getRegionWidth() * 0.5f, turretOrigin.y,
+                turret.getRegionWidth() * 0.5f, 0,
                 turret.getRegionWidth(), turret.getRegionHeight(), 1, 1, -world.getAngle());
         batch.draw(turretCover, (width - turretCover.getRegionWidth()) / 2, 0);
+
+        for (PhysicsGameObject bullet : world.bullets) {
+            bullet.render(batch);
+        }
 
         batch.end();
     }
