@@ -1,14 +1,18 @@
 package com.gordonfromblumberg.games.core.ufo;
 
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Pool;
 import com.gordonfromblumberg.games.core.common.factory.AbstractFactory;
+import com.gordonfromblumberg.games.core.common.model.GameObject;
 import com.gordonfromblumberg.games.core.common.model.PhysicsGameObject;
 import com.gordonfromblumberg.games.core.common.physics.GravityMovingStrategy;
 import com.gordonfromblumberg.games.core.common.utils.ConfigManager;
 import com.gordonfromblumberg.games.core.common.utils.RandomGen;
 import com.gordonfromblumberg.games.core.common.world.World;
+
+import java.util.Iterator;
 
 public class UfoWorld extends World {
     private static final int MAX_ANGLE_VELOCITY = 7;
@@ -16,6 +20,7 @@ public class UfoWorld extends World {
     private static final float BULLET_VELOCITY = 42;
     private static final GravityMovingStrategy BULLET_MOVING_STRATEGY = new GravityMovingStrategy(0, -2);
     private static final Vector2 TURRET_ORIGIN = new Vector2();
+    private static final Rectangle SCREEN_BOUNDS = new Rectangle(0, 0, 640, 480);
 
     static final Vector2 TURRET_SIZE = new Vector2();
     static final Vector2 BULLET_SIZE = new Vector2();
@@ -41,6 +46,7 @@ public class UfoWorld extends World {
 
     final Array<PhysicsGameObject> bullets = new Array<>();
     private final Vector2 temp = new Vector2();
+    private final Array<GameObject> objectsToRemove = new Array<>();
 
     public UfoWorld() {
         this(PlayerControls.INSTANCE, RandomGen.INSTANCE.nextLong());
@@ -81,7 +87,12 @@ public class UfoWorld extends World {
 
         for (PhysicsGameObject bullet : bullets) {
             bullet.update(1);
+            if (isOutOfScreen(bullet)) {
+                objectsToRemove.add(bullet);
+            }
         }
+
+
     }
 
     private void shoot() {
@@ -109,5 +120,10 @@ public class UfoWorld extends World {
 
     public Vector2 getTurretOrigin() {
         return TURRET_ORIGIN;
+    }
+
+    private boolean isOutOfScreen(GameObject object) {
+        return !SCREEN_BOUNDS.overlaps(object.getBoundingRectangle())
+                && object.position.y < SCREEN_BOUNDS.height;
     }
 }
